@@ -16,7 +16,7 @@ class Listener(object):
         """ Start listening when 'enter' is pressed. """
         self._enter_pressed = False
 
-        # keyboard.wait('enter')
+        keyboard.wait('enter')
         keyboard.hook(self._log_event)
 
         self._print_str()
@@ -33,7 +33,7 @@ class Listener(object):
                 self._enter_pressed = not self._enter_pressed
 
             elif self.e_json['event_type'] == 'down' and self.e_json['name'] == 'enter' and self._enter_pressed:
-                print(self.keys_pressed)
+                # print(self.keys_pressed)
                 self._enter_pressed = not self._enter_pressed
 
             elif self.e_json['event_type'] == 'down' and self._enter_pressed:
@@ -47,6 +47,8 @@ class Listener(object):
         while n < 3:
             self.keys_pressed = ''
             keyboard.wait('enter')
-            typed_string = self.keys_pressed
-            print(typed_string)
+            print(self.keys_pressed)
             n += 1
+
+
+
