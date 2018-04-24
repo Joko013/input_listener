@@ -6,16 +6,23 @@ import sys
 class Listener(object):
     """" Listener object to capture keyboard input. """
     def __init__(self):
-        self.all_events = []
         self._start_listening()
-
-        keyboard.wait('esc')
-
-        typed_string = [event['name'] for event in self.all_events]
-        print(typed_string)
+        n=0
+        while n < 3:
+            
+            self.keys_pressed = []
+            self._wait_until_key(key='esc')
+    
+            typed_string = ''.join(event['name'] for event in self.keys_pressed[:-1])
+            print(typed_string)
+            n+=1
+        
+    def _wait_until_key(self, key):
+        keyboard.wait(key)
 
     def _start_listening(self):
-        keyboard.wait('esc')
+        """ Start listening after 'esc' is pressed. """
+        self._wait_until_key(key='esc')
         keyboard.hook(self._log_event)
 
     def _log_event(self, event):
@@ -23,10 +30,7 @@ class Listener(object):
         e_json = json.loads(e)
 
         if e_json['event_type'] == 'down':
-            self.all_events.append(e_json)
-
-
-
+            self.keys_pressed.append(e_json)
 
 
 
