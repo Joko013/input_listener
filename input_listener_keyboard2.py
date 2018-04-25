@@ -1,4 +1,3 @@
-
 import keyboard
 import json
 import sys
@@ -17,7 +16,7 @@ class Listener(object):
     def _start_listening(self):
         """ Start listening when 'enter' is pressed. """
         self._enter_pressed = False
-
+        self._trigger = True
         
         keyboard.hook(self._log_event)
         keyboard.wait('enter')
@@ -33,15 +32,21 @@ class Listener(object):
             self._enter_pressed = not self._enter_pressed
 
         elif self.e_json['event_type'] == 'down' and self.e_json['name'] == 'enter' and self._enter_pressed:
-            # print(self.keys_pressed)
             self._enter_pressed = not self._enter_pressed
+            
+        elif self.e_json['event_type'] == 'down' and self.e_json['name'] == 'esc':
+            self._trigger = not self._trigger
 
         elif self.e_json['event_type'] == 'down' and self._enter_pressed:
             self.keys_pressed += self.e_json['name']
+            
+
 
     def _print_str(self):
         n = 0
-        while n < 3:
+        while self._trigger:
             keyboard.wait('enter')
+            self._enter_pressed = not self._enter_pressed
             print(self.keys_pressed)
+            self.keys_pressed = ''
             n += 1
