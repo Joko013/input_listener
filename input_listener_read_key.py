@@ -9,7 +9,7 @@ class Listener(object):
     def __init__(self):
         self._esc_trigger = True
         self.keys_pressed = ''
-        
+
         self._start_listening()
 
 
@@ -24,17 +24,22 @@ class Listener(object):
 
     def _log_event(self, event):
         """ Log pressed keyboard events (event_type == down). """
+
         e = event.to_json(ensure_ascii=sys.stdout.encoding != 'utf-8')
         self.e_json = json.loads(e)
         
         if self.e_json['event_type'] == 'down':
+
+            if self.e_json['name'] == 'enter':
+                print(self.keys_pressed)
+            
             self._store_key()
-            print(self.keys_pressed)
-            return self.keys_pressed
 
 
     def _store_key(self):
-        """ Log pressed keyboard names as strings. Enter as delimiter, esc to end the run. """
+        """ Log pressed keyboard names as strings.
+            Enter as delimiter, esc to end the run. """
+
         if self.e_json['name'] == 'enter':
             self.keys_pressed = ''
 
