@@ -20,7 +20,7 @@ class Listener(object):
             self._key_pressed = keyboard.read_event()
 
             self._log_event(self._key_pressed)
-
+            
 
     def _log_event(self, event):
         """ Log pressed keyboard events (event_type == down). """
@@ -30,8 +30,8 @@ class Listener(object):
         
         if self.e_json['event_type'] == 'down':
 
-            if self.e_json['name'] == 'enter':
-                print(self.keys_pressed)
+            if self.e_json['name'] == 'space' or self.e_json['name'] == 'enter':
+                print('You typed: {}'.format(self.keys_pressed))
             
             self._store_key()
 
@@ -40,7 +40,7 @@ class Listener(object):
         """ Log pressed keyboard names as strings.
             Enter as delimiter, esc to end the run. """
 
-        if self.e_json['name'] == 'enter':
+        if self.e_json['name'] == 'space' or self.e_json['name'] == 'enter':
             self.keys_pressed = ''
 
         elif self.e_json['name'] == 'esc':
@@ -49,3 +49,4 @@ class Listener(object):
 
         else:
             self.keys_pressed += self.e_json['name']
+
