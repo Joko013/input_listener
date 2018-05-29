@@ -2,7 +2,7 @@ import json
 import sys
 import threading
 import keyboard
-from popups import make_popup
+from tools import TextAnalyzer
 
 
 class Listener(object):
@@ -11,6 +11,7 @@ class Listener(object):
     def __init__(self):
         self._esc_trigger = True
         self.keys_pressed = ''
+        self._t = TextAnalyzer()
 
         self._start_listening()
 
@@ -33,8 +34,9 @@ class Listener(object):
         if self.e_json['event_type'] == 'down':
             if self.e_json['name'] == 'space' or self.e_json['name'] == 'enter':
 
-                to_print = self.keys_pressed
-                t = threading.Thread(target=make_popup, args=(to_print,))
+                # to_print = 'You typed: {}'.format(self.keys_pressed)
+                to_analyze = self.keys_pressed
+                t = threading.Thread(target=self._t.analyze_text, args=(to_analyze,))
                 t.start()
                 # make_popup('You typed: {}'.format(to_print))
             
