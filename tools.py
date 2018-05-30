@@ -1,26 +1,43 @@
 import tkinter
+from PIL import ImageTk, Image
 
 
-def make_popup(text):
-    top = tkinter.Tk()
-    content = tkinter.Text(top)
-    content.insert(tkinter.INSERT, text)
-    content.pack()
-    top.attributes("-topmost", True)
-    top.after(1500, lambda: top.destroy())
+def make_popup():
+    """ Make a popup window with an image. """
 
-    top.mainloop()
+    # basic object that represents the window
+    root = tkinter.Tk()
+
+    # widget for storing the actual image
+    img = ImageTk.PhotoImage(Image.open("Pics\chill.jpg"))
+    widget = tkinter.Label(root, image=img)
+    widget.pack()
+
+    # make window popup on top; make window disappear after 1,5s
+    root.attributes("-topmost", True)
+    root.after(1500, lambda: root.destroy())
+
+    root.mainloop()
 
 
 class TextAnalyzer:
+    """ Object to analyze the text and based on the result call an appropriate function. """
+
     def __init__(self):
-        bad_words = ['fuck', 'shit', 'dick']
-        self.bad_words_set = set(bad_words)
+        # define your set of bad words
+        self.bw_set = set()
+        with open('Bad_words/bad_words_eng.txt', mode='r') as f:
+            for line in f:
+                self.bw_set.add(line.replace('\n', ''))
 
     def analyze_text(self, text):
-        if text in self.bad_words_set:
-            make_popup('Ouch, chill dude!')
+        """ Check the text and call function. """
+        if text.lower() in self.bw_set:
+            make_popup()
         else:
-            make_popup('Everything cool here.')
+            print(text)
+
+
+
 
 
